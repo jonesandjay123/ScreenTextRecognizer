@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.graphics.PixelFormat
 import android.util.Log
 import android.view.View
+import android.widget.Button
 
 class OverlayService : Service() {
     private lateinit var windowManager: WindowManager
@@ -37,6 +38,11 @@ class OverlayService : Service() {
 
         params.gravity = Gravity.CENTER
         windowManager.addView(overlayView, params)
+
+        val closeButton = overlayView.findViewById<Button>(R.id.closeButton)
+        closeButton.setOnClickListener {
+            stopSelf() // 停止服務
+        }
     }
 
     override fun onDestroy() {
