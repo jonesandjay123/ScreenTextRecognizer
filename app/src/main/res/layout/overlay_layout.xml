@@ -8,14 +8,14 @@
         android:id="@+id/redBox"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:background="#FF0000"
+        android:background="@drawable/red_border"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/closeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:text="Ｘ"
         app:layout_constraintTop_toTopOf="@+id/redBox"
         app:layout_constraintStart_toEndOf="@+id/redBox" />
