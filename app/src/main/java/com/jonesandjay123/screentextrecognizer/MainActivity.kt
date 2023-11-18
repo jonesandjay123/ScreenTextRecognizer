@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("!!!==========MainActivity", "Service is starting. =========")
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
 

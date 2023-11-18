@@ -5,27 +5,8 @@
     android:background="@android:color/transparent">
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@null"
-        android:padding="40dp"
-        android:backgroundTint="#00FF0000"
-    />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="2dp"
-        android:background="@null">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:layout_margin="4dp"
-            android:backgroundTint="@android:color/transparent"
-            android:outlineProvider="bounds"/>
-
-    </FrameLayout>
-
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:background="#FF0000" />
 </FrameLayout>
