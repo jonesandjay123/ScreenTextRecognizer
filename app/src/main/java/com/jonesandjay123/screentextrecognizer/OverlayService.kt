@@ -8,7 +8,6 @@ import android.view.WindowManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 
 class OverlayService : Service() {
     private lateinit var windowManager: WindowManager
@@ -26,26 +25,25 @@ class OverlayService : Service() {
         overlayView = LayoutInflater.from(this).inflate(R.layout.overlay_layout, null)
 
         // Define layout parameters for the overlay
+        val displayMetrics = resources.displayMetrics
+        val width = (displayMetrics.widthPixels * 0.5).toInt()
+        val height = (displayMetrics.heightPixels * 0.5).toInt()
+
         val params = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
+            width,
+            height,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
 
-        // Specify the overlay position
-        params.gravity = Gravity.TOP or Gravity.START
-        params.x = 0
-        params.y = 100
-
-        // Add the overlay view to the window
+        params.gravity = Gravity.CENTER
         windowManager.addView(overlayView, params)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (overlayView != null) {
+        if (this::overlayView.isInitialized) {
             windowManager.removeView(overlayView)
         }
     }
