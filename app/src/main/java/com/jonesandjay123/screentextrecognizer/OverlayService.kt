@@ -25,6 +25,7 @@ class OverlayService : Service() {
         setupButtonListener()
     }
 
+    // 初始化懸浮視窗
     private fun initializeOverlay() {
         Log.d("OverlayService", "Service is starting.")
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
@@ -46,6 +47,7 @@ class OverlayService : Service() {
         windowManager.addView(overlayView, params)
     }
 
+    // 設置紅色框框的觸摸監聽器
     @SuppressLint("ClickableViewAccessibility")
     private fun setupTouchListeners() {
         var initialX = 0
@@ -74,6 +76,7 @@ class OverlayService : Service() {
         }
     }
 
+    // 關閉按鈕的點擊事件處理器
     private fun setupButtonListener() {
         val closeButton = overlayView.findViewById<Button>(R.id.closeButton)
         closeButton.setOnClickListener {
