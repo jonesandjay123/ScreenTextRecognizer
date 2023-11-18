@@ -1,5 +1,6 @@
 package com.jonesandjay123.screentextrecognizer
 
+import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
@@ -11,6 +12,7 @@ import android.widget.Button
 class OverlayService : Service() {
     private lateinit var windowManager: WindowManager
     private lateinit var overlayView: View
+    private lateinit var params: WindowManager.LayoutParams
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -18,38 +20,43 @@ class OverlayService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.d("!!!==========OverlayService", "Service is starting. =========")
+        initializeOverlay()
+        setupTouchListeners()
+        setupButtonListener()
+    }
+
+    private fun initializeOverlay() {
+        Log.d("OverlayService", "Service is starting.")
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
         // Inflate the overlay layout
         overlayView = LayoutInflater.from(this).inflate(R.layout.overlay_layout, null)
 
         // Define layout parameters for the overlay
-        val params = WindowManager.LayoutParams(
+        params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
-        )
+        ).apply {
+            gravity = Gravity.CENTER
+        }
 
-        params.gravity = Gravity.CENTER
         windowManager.addView(overlayView, params)
+    }
 
-        // Initialize variables for tracking touch position and view position
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupTouchListeners() {
         var initialX = 0
         var initialY = 0
         var initialTouchX = 0f
         var initialTouchY = 0f
 
-        // Find the red box view
         val redBox = overlayView.findViewById<View>(R.id.redBox)
-
-        // Set touch listener for moving the overlay view
-        redBox.setOnTouchListener { view, event ->
+        redBox.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    // Remember the initial position when the touch started
                     initialX = params.x
                     initialY = params.y
                     initialTouchX = event.rawX
@@ -57,22 +64,20 @@ class OverlayService : Service() {
                     true
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    // Calculate the X and Y coordinates of the view
                     params.x = initialX + (event.rawX - initialTouchX).toInt()
                     params.y = initialY + (event.rawY - initialTouchY).toInt()
-
-                    // Update the layout with new X & Y coordinates
                     windowManager.updateViewLayout(overlayView, params)
                     true
                 }
                 else -> false
             }
         }
+    }
 
-        // Handling the close button click
+    private fun setupButtonListener() {
         val closeButton = overlayView.findViewById<Button>(R.id.closeButton)
         closeButton.setOnClickListener {
-            stopSelf() // Stop the service
+            stopSelf()
         }
     }
 
